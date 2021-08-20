@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+    <body>
+        <p>
+            <h2 th:text="${patient.name}"></h2> <h2 th:text="${patient.surname}"></h2>
+        </p>
+        <p>
+            <h3 th:text="${patient.description}"></h3>
+        </p>
+        <form id="form" action="/doc/direction">
+            <input id="button" type="submit" value="Create Direction" />
+            <input type="hidden" name="patient" th:value="${patient.id}" />
+            <input type="hidden" name="doctor" th:value="${doctor_id}" />
+            <input type="hidden" name="token" th:value="${token}" />
+        </form>
+    </body>
+</html>

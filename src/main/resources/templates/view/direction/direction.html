@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Direction</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<head>
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<h1>Direction</h1>
+<p><input id="direction" list="list">
+    <datalist id="list"></datalist>
+</p>
+<table id="direction_info">
+
+</table>
+<SCRIPT th:inline="javascript">
+    var data = [[${unregistered_list}]]
+    window.onload = dirList()
+    document.querySelector('input[list="list"]').addEventListener('input', loadInTable);
+    function dirList(){
+        var list = document.getElementById('list');
+      //  var data = [[${unregistered_list}]]
+        for (var i = 0, ln = data.length; i < data.length; i++) {
+            var option = document.createElement('option');
+            var m = data[i]
+            option.value = m.patient_name + " " + m.patient_surname + " " + m.phone_Number;
+            list.appendChild(option)
+        }
+    }
+    function findPatient(patient) {
+        for (var i = 0, ln = data.length; i < data.length; i++) {
+            if (patient === data[i].patient_name + " " + data[i].patient_surname + " " + data[i].phone_Number) {
+                return data[i].direction_Id
+            }
+        }
+    }
+    function loadInTable() {
+        $.getJSON( "http://localhost:8080/laboratory/getDirection",{id:findPatient(document.getElementById("direction").value)}).done(function (direction){
+            var dir = document.getElementById('direction_info');
+                var tr = document.createElement("tr");
+                var td = document.createElement("td");
+                td.innerHTML = direction.patient_name
+                tr.appendChild(td)
+                dir.appendChild(tr)
+
+        })
+    }
+
+</SCRIPT>
+
+<form action="../../lab/[[$laboratory.id}]]/direction" name="regDirectionForm" target="_self">
+    <p>
+        Patient Name:<input type="text" name="name">
+    </p>
+    <p>
+        Patient Surname:<input type="text" name="surname" >
+    </p>
+    <p>
+        Description: :<textarea type="text" name="description"></textarea>
+    </p>
+    <p>
+        <button name="postDirection" type="submit"> postDirection</button>
+    </p>
+    <input type="hidden" name="token" th:value="${token}"/>
+</form>
+</body>
+</html>
