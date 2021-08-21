@@ -1,4 +1,4 @@
-package ru.bogdanov.xrdent.entity;
+package ru.bogdanov.xrdent.entity.result;
 
 
 public class Result {
@@ -7,8 +7,12 @@ public class Result {
   private String dataSrc;
   private String description;
   private long directionId;
-  private long doctorId;
 
+  public Result(String dataSrc, String description, long directionId) {
+    this.dataSrc = dataSrc;
+    this.description = description;
+    this.directionId = directionId;
+  }
 
   public long getId() {
     return id;
@@ -45,13 +49,5 @@ public class Result {
     this.directionId = directionId;
   }
 
-
-  public long getDoctorId() {
-    return doctorId;
-  }
-
-  public void setDoctorId(long doctorId) {
-    this.doctorId = doctorId;
-  }
 
 }

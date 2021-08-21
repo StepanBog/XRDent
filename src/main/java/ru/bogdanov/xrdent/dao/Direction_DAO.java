@@ -140,4 +140,15 @@ public class Direction_DAO {
 
         }
     }
+
+    public void close_direction(Long direction_id) {
+        try {
+            String query = "UPDATE direction SET is_close = true WHERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setLong(1,direction_id);
+            statement.execute();
+        } catch (SQLException e) {
+
+        }
+    }
 }

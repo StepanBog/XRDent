@@ -2,7 +2,7 @@ package ru.bogdanov.xrdent.dao;
 
 import ru.bogdanov.xrdent.entity.*;
 import ru.bogdanov.xrdent.entity.direction.RegisteredDirection;
-import ru.bogdanov.xrdent.entity.direction.UnRegisteredDirection;
+import ru.bogdanov.xrdent.entity.result.Result;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -13,6 +13,7 @@ public class Direction{
     String description;
     java.sql.Timestamp post_dataTime;
     private String phone_number;
+    boolean is_close = false;
 
     public Direction(String doctorId, String patientId, String description) {
         this.doctor_id = Long.parseLong(doctorId);
@@ -82,5 +83,13 @@ public class Direction{
 
     public void setDataTime(Timestamp dataTime) {
         this.post_dataTime = dataTime;
+    }
+
+    public boolean isIs_close() {
+        return is_close;
+    }
+
+    public void setIs_close(boolean is_close) {
+        this.is_close = is_close;
     }
 }
