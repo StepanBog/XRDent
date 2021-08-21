@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.bogdanov.xrdent.dao.Direction_DAO;
 import ru.bogdanov.xrdent.dao.Doctor_DAO;
 import ru.bogdanov.xrdent.dao.LogDAO;
 import ru.bogdanov.xrdent.dao.Patient_DAO;
@@ -22,6 +23,7 @@ public class DoctorController {
     private LogDAO log_dao = new LogDAO();
     private Doctor_DAO doc_dao = new Doctor_DAO();
     private Patient_DAO patient_dao = new Patient_DAO();
+    private Direction_DAO direction_dao =new Direction_DAO();
 
 
     public boolean cheakToken(String token){
@@ -91,7 +93,7 @@ public class DoctorController {
             return "view/login/login";
         }
         Direction d = new Direction(doctor_id,patient_id,descrition);
-        doc_dao.postDirection(d);
+        direction_dao.postDirection(d);
         model.addAttribute("token", token);
         return "forward:/doc/" + doctor_id;
     }

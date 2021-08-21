@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Direction {
+public class Direction{
 
     long id;
     long doctor_id;

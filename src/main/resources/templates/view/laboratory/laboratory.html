@@ -8,25 +8,22 @@
   <title>Laboratory</title>
 </head>
 <h2 th:text="${laboratory.name}"></h2>>
-<p><input id="unregList" list="unregdir">
-  <datalist id="unregdir"></datalist>
-</p>
 <form id="form">
   <input id="button" type="button" onclick="regDir()" value="Registrate Direction" />
   <input id="button2" type="button" onclick="seeDir()" value="See Direction" />
   <input type="hidden" name="token" th:value="${token}" />
-  <input type="hidden" name="laboratory" th:value="${laboratory.id}" />
+  <input type="hidden" name="laboratory_id" th:value="${laboratory.id}" />
 </form>
 
 <script th:inline="javascript">
     function regDir(){
       var form = document.getElementById('form');
-      form.action = "../../laboratory/" + [[${laboratory.id}]] + "/regdir"
+      form.action = "../../direction/regdir"
       form.submit();
     }
     function seeDir(){
       var form = document.getElementById('form');
-      form.action = "../../laboratory/" + [[${laboratory.id}]] + "/seedir"
+      form.action = "../../direction/seedir"
       form.submit();
     }
 </script>

@@ -26,45 +26,73 @@
         for (var i = 0, ln = data.length; i < data.length; i++) {
             var option = document.createElement('option');
             var m = data[i]
-            option.value = m.patient_name + " " + m.patient_surname + " " + m.phone_Number;
+            option.value = m.name + " " + m.surname + " " + m.phone_number;
             list.appendChild(option)
         }
     }
     function findPatient(patient) {
         for (var i = 0, ln = data.length; i < data.length; i++) {
-            if (patient === data[i].patient_name + " " + data[i].patient_surname + " " + data[i].phone_Number) {
-                return data[i].direction_Id
+            if (patient === data[i].name + " " + data[i].surname + " " + data[i].phone_number) {
+                return data[i].id
             }
         }
     }
     function loadInTable() {
-        $.getJSON( "http://localhost:8080/laboratory/getDirection",{id:findPatient(document.getElementById("direction").value)}).done(function (direction){
+        $.getJSON( "http://localhost:8080/direction/getDirection",{id:findPatient(document.getElementById("direction").value)}).done(function (direction){
             var dir = document.getElementById('direction_info');
-                var tr = document.createElement("tr");
-                var td = document.createElement("td");
-                td.innerHTML = direction.patient_name
-                tr.appendChild(td)
-                dir.appendChild(tr)
+            while(dir.firstChild){
+                dir.removeChild(dir.firstChild);
+            }
+            var tr = document.createElement("tr");
 
+            var td = document.createElement("td");
+            td.innerHTML = "Name"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = direction.patient_name
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Surname"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = direction.patient_surname
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Age"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = direction.patient_Age
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Phone Number"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = direction.phone_Number
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            var id = document.getElementById('direction_id');
+            id.value = direction.id
         })
     }
 
 </SCRIPT>
 
-<form action="../../lab/[[$laboratory.id}]]/direction" name="regDirectionForm" target="_self">
-    <p>
-        Patient Name:<input type="text" name="name">
-    </p>
-    <p>
-        Patient Surname:<input type="text" name="surname" >
-    </p>
-    <p>
-        Description: :<textarea type="text" name="description"></textarea>
-    </p>
-    <p>
-        <button name="postDirection" type="submit"> postDirection</button>
-    </p>
+<form action="../../direction/regdir" name="regDirectionForm" method="post" target="_self">
+    <input type="datetime-local" name="date_time">
     <input type="hidden" name="token" th:value="${token}"/>
+    <input type="hidden" id="laboratory_id" name="laboratory_id" th:value="${laboratory_id}"/>
+    <input type="hidden" id="direction_id" name="direction_id" />
+    <button type="submit">Registrate Direction</button>
 </form>
 </body>
 </html>

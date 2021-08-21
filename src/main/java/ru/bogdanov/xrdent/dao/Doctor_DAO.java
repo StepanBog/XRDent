@@ -17,19 +17,6 @@ public class Doctor_DAO {
 
         }
     }
-    public void postDirection(Direction d) {
-        try {
-            String query = "INSERT INTO direction(doctor_id, patient_id, description, data_time) VALUE(?,?,?,?)";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setLong(1,d.getDoctor_id());
-            statement.setLong(2,d.getPatient_id());
-            statement.setString(3,d.getDescription());
-            statement.setTimestamp(4,d.getDataTime());
-            statement.execute();
-        } catch (SQLException e) {
-
-        }
-    }
 
     public Doctor getByID(Long id) {
         try {
