@@ -14,7 +14,6 @@ public class RegisteredDirection extends Direction {
 
   private String doctor_name;
   private String doctor_surname;
-
   public RegisteredDirection() {
   }
 

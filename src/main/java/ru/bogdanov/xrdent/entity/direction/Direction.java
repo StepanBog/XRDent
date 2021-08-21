@@ -12,6 +12,7 @@ public class Direction{
     long patient_id;
     String description;
     java.sql.Timestamp post_dataTime;
+    private String phone_number;
 
     public Direction(String doctorId, String patientId, String description) {
         this.doctor_id = Long.parseLong(doctorId);
@@ -25,6 +26,22 @@ public class Direction{
 
     public Direction() {
 
+    }
+
+    public Timestamp getPost_dataTime() {
+        return post_dataTime;
+    }
+
+    public void setPost_dataTime(Timestamp post_dataTime) {
+        this.post_dataTime = post_dataTime;
+    }
+
+    public String getPhone_number() {
+        return phone_number;
+    }
+
+    public void setPhone_number(String phone_number) {
+        this.phone_number = phone_number;
     }
 
     public long getId() {

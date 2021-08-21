@@ -35,7 +35,7 @@ public class Direction_DAO {
                 UnRegisteredDirection d = new UnRegisteredDirection();
                 d.setPatient_name(result.getString(1));
                 d.setPatient_surname(result.getString(2));
-                d.setPhone_Number(result.getString(3));
+                d.setPhone_number(result.getString(3));
                 d.setPatient_Age(result.getInt(4));
                 d.setDescription(result.getString(5));
                 d.setDirection_Id(result.getLong(7));
@@ -46,26 +46,46 @@ public class Direction_DAO {
             return null;
         }
     }
-    public List<RegisteredDirection> getListOfRegisteredDirection(Long lab_id){
+    public RegisteredDirection getRegDirByID(Long id) {
         try {
-            String query = "SELECT * FROM registered_direction WHERE laboratory_ID = ?";
+            String query = "SELECT * FROM registered_direction WHERE direction_id = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setLong(1,lab_id);
+            statement.setLong(1,id);
             ResultSet result = statement.executeQuery();
-            List<RegisteredDirection> l = new ArrayList<>();
             while (result.next()){
                 RegisteredDirection d = new RegisteredDirection();
                 d.setPatient_id(result.getLong(1));
                 d.setPatient_name(result.getString(2));
                 d.setPatient_surname(result.getString(3));
                 d.setPatient_Age(result.getInt(4));
-                d.setDirectionId(result.getLong(5));
-                d.setDescription(result.getString(6));
-                d.setRegistrationDateTime(result.getTimestamp(7));
-                d.setLaboratoryId(result.getLong(8));
-                d.setDoctor_id(result.getLong(9));
-                d.setDoctor_name(result.getString(10));
-                d.setDoctor_surname(result.getString(11));
+                d.setPhone_number(result.getString(5));
+                d.setDirectionId(result.getLong(6));
+                d.setDescription(result.getString(7));
+                d.setRegistrationDateTime(result.getTimestamp(8));
+                d.setLaboratoryId(result.getLong(9));
+                d.setDoctor_id(result.getLong(10));
+                d.setDoctor_name(result.getString(11));
+                d.setDoctor_surname(result.getString(12));
+                return d;
+            }
+            return null;
+        } catch (SQLException e){
+            return null;
+        }
+    }
+    public List<Direction_Cutted> getListOfRegisteredDirection(Long lab_id){
+        try {
+            String query = "SELECT patient_name, patient_surname, phone_number, direction_id FROM registered_direction WHERE laboratory_ID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setLong(1,lab_id);
+            ResultSet result = statement.executeQuery();
+            List<Direction_Cutted> l = new ArrayList<>();
+            while (result.next()){
+                Direction_Cutted d = new Direction_Cutted();
+                d.setName(result.getString(1));
+                d.setSurname(result.getString(2));
+                d.setPhone_number(result.getString(3));
+                d.setId(result.getLong(4));
                 l.add(d);
             }
             return l;

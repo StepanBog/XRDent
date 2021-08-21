@@ -70,8 +70,9 @@ public class DirectionController {
         if (!cheakToken(token)) {
             return "view/login/login";
         }
-        List<RegisteredDirection> rl = direction_dao.getListOfRegisteredDirection(laboratory_id);
+        List<Direction_Cutted> rl = direction_dao.getListOfRegisteredDirection(laboratory_id);
         model.addAttribute("registered_list", rl);
+        model.addAttribute("laboratory_id", laboratory_id);
         model.addAttribute("token", token);
         return "view/direction/registered_direction";
     }
@@ -80,5 +81,10 @@ public class DirectionController {
     @ResponseBody
     public String getDirection(@RequestParam(name = "id", required = true) Long id, HttpServletRequest req, HttpServletResponse res) {
         return new Gson().toJson(direction_dao.getUnRegDirByID(id));
+    }
+    @RequestMapping(value = "/getRegDirection", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String getRegDirection(@RequestParam(name = "id", required = true) Long id, HttpServletRequest req, HttpServletResponse res) {
+        return new Gson().toJson(direction_dao.getRegDirByID(id));
     }
 }

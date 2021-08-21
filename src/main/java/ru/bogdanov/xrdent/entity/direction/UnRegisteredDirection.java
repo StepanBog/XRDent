@@ -5,8 +5,6 @@ public class UnRegisteredDirection extends Direction{
     private String patient_name;
     private String patient_surname;
     private int patient_Age;
-    private String phone_Number;
-
     public long getDirection_Id() {
         return id;
     }
@@ -45,14 +43,6 @@ public class UnRegisteredDirection extends Direction{
 
     public void setPatient_Age(int patient_Age) {
         this.patient_Age = patient_Age;
-    }
-
-    public String getPhone_Number() {
-        return phone_Number;
-    }
-
-    public void setPhone_Number(String phone_Number) {
-        this.phone_Number = phone_Number;
     }
 
 

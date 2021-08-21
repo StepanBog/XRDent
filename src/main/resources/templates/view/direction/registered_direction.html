@@ -75,7 +75,7 @@
             td.innerHTML = "Phone Number"
             tr.appendChild(td)
             td = document.createElement("td");
-            td.innerHTML = direction.phone_Number
+            td.innerHTML = direction.phone_number
             tr.appendChild(td)
             dir.appendChild(tr)
 
@@ -86,12 +86,15 @@
 
 </SCRIPT>
 
-<form action="../../direction/regdir" name="regDirectionForm" method="post" target="_self">
-    <input type="datetime-local" name="date_time">
+<form action="../../" name="postResultForm" method="post" target="_self">
     <input type="hidden" name="token" th:value="${token}"/>
-    <input type="hidden" id="laboratory_id" name="laboratory_id" th:value=""/>
+    <input type="hidden" id="laboratory_id" name="laboratory_id" th:value="${laboratory_id}"/>
     <input type="hidden" id="direction_id" name="direction_id" />
-    <button type="submit">Registrate Direction</button>
+    <button type="submit">Post result</button>
+    Src:<input type="text" name="src">
+    Comment to result :<textarea type="text" name="description"></textarea>
+
+
 </form>
 </body>
 </html>
