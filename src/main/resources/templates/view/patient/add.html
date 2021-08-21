@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <form action="../../patient/add" method="post" target="_self">
+        <p>
+            Name:<input type="text" name="name">
+        </p>
+        <p>
+            Surname:<input type="text" name="surname">
+        </p>
+        <p>
+            Description:<input type="text" name="description">
+        </p>
+        <p>
+            Age:<input type="text" name="age">
+        </p>
+        <p>
+            Phone Number:<input type="text" name="phone_number">
+        </p>
+        <button type="submit" name="Add Patient">Add Patient</button>
+        <input type="hidden" name="token" th:value="${token}"/>
+        <input type="hidden" name="doctor_id" th:value="${doctor}"/>
+    </form>
+</head>
+<body>
+
+</body>
+</html>

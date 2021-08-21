@@ -9,6 +9,9 @@ import ru.bogdanov.xrdent.dao.LogDAO;
 import ru.bogdanov.xrdent.dao.Patient_DAO;
 import ru.bogdanov.xrdent.entity.*;
 import com.google.gson.Gson;
+import ru.bogdanov.xrdent.entity.direction.RegisteredDirection;
+import ru.bogdanov.xrdent.entity.direction.UnRegisteredDirection;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

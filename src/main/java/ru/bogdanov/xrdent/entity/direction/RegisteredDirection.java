@@ -1,21 +1,17 @@
-package ru.bogdanov.xrdent.entity;
+package ru.bogdanov.xrdent.entity.direction;
 
 
 import java.sql.Timestamp;
 
-public class RegisteredDirection {
+public class RegisteredDirection extends Direction {
 
-  private long directionId;
-  private String description;
   private long laboratoryId;
   private java.sql.Timestamp registrationDateTime;
 
-  private long patient_id;
   private String patient_name;
   private String patient_surname;
   private int patient_Age;
 
-  private long doctor_id;
   private String doctor_name;
   private String doctor_surname;
 
@@ -23,11 +19,11 @@ public class RegisteredDirection {
   }
 
   public long getDirectionId() {
-    return directionId;
+    return this.id;
   }
 
   public void setDirectionId(long directionId) {
-    this.directionId = directionId;
+    this.id = directionId;
   }
 
   public String getDescription() {

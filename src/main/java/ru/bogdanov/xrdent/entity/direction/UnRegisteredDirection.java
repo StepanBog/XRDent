@@ -1,8 +1,6 @@
-package ru.bogdanov.xrdent.entity;
+package ru.bogdanov.xrdent.entity.direction;
 
-public class UnRegisteredDirection {
-    private long direction_Id;
-    private String description;
+public class UnRegisteredDirection extends Direction{
 
     private String patient_name;
     private String patient_surname;
@@ -10,11 +8,11 @@ public class UnRegisteredDirection {
     private String phone_Number;
 
     public long getDirection_Id() {
-        return direction_Id;
+        return id;
     }
 
     public void setDirection_Id(long direction_Id) {
-        this.direction_Id = direction_Id;
+        this.id = direction_Id;
     }
 
     public String getDescription() {

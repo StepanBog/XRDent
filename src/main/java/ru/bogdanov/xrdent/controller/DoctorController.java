@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.bogdanov.xrdent.dao.Doctor_DAO;
 import ru.bogdanov.xrdent.dao.LogDAO;
 import ru.bogdanov.xrdent.dao.Patient_DAO;
-import ru.bogdanov.xrdent.entity.Direction;
+import ru.bogdanov.xrdent.entity.direction.Direction;
 import ru.bogdanov.xrdent.entity.Doctor;
-import ru.bogdanov.xrdent.entity.Patient;
+import ru.bogdanov.xrdent.entity.patient.Patient;
+import ru.bogdanov.xrdent.entity.patient.Patient_Cutted;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 @Controller
 @RequestMapping("/doc")
@@ -41,11 +40,23 @@ public class DoctorController {
             return "view/login/login";
         }
         Doctor d = doc_dao.getByID(id);
-        List<Patient> l = patient_dao.getListByDocID(d.getId());
-        model.addAttribute("list", l);
         model.addAttribute("token", token);
         model.addAttribute("doctor", d);
         return "view/doctor/doctor";
+
+    }
+    @GetMapping("/{id}/patients")
+    public String getPatients(HttpServletRequest req,  @PathVariable Long id, Model model) {
+        String token = req.getParameter("token");
+        if (!cheakToken(token)) {
+            return "view/login/login";
+        }
+        Doctor d = doc_dao.getByID(id);
+        List<Patient_Cutted> l = patient_dao.getListByDocID(d.getId());
+        model.addAttribute("patient_list", l);
+        model.addAttribute("token", token);
+        model.addAttribute("doctor", d);
+        return "view/patient/patient";
 
     }
     @PostMapping("/{id}")
@@ -67,7 +78,7 @@ public class DoctorController {
         model.addAttribute("token", token);
         model.addAttribute("patient", p);
         model.addAttribute("doctor", d);
-        return "view/direction/direction";
+        return "view/direction/create_direction";
     }
     // сохраняем направление в бд
     @PostMapping("/direction")

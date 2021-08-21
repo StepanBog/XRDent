@@ -1,15 +1,23 @@
-package ru.bogdanov.xrdent.entity;
+package ru.bogdanov.xrdent.entity.patient;
 
 
-public class Patient {
-
-  private long id;
-  private String name;
-  private String surname;
+public class Patient extends Patient_Cutted {
   private long doctorId;
-  private String phoneNumber;
-  private int Age;
+  private int age;
   private String description;
+
+  public Patient(String name, String surname, String age, String description, String phoneNumber, String doctor_id) {
+    this.name = name;
+    this.surname = surname;
+    this.description = description;
+    this.phoneNumber = phoneNumber;
+    this.doctorId = Long.parseLong(doctor_id);
+    this.age = Integer.parseInt(age);
+
+  }
+  public Patient(){
+
+  }
 
 
   public long getId() {
@@ -57,11 +65,11 @@ public class Patient {
   }
 
   public int getAge() {
-    return Age;
+    return age;
   }
 
   public void setAge(int age) {
-    Age = age;
+    this.age = age;
   }
 
   public void setDescription(String string) {

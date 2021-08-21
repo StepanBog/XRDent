@@ -2,45 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Doctor</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <head>
     <title>Title</title>
 </head>
-<h2 th:text="${doctor.name}"></h2> <h2 th:text="${doctor.surname}"></h2>
-<p><input id="patient" list="list">
-    <datalist id="list"></datalist>
-</p>
+<h2 th:text="${doctor.name}"></h2>
+<h2 th:text="${doctor.surname}"></h2>
 <form id="form">
-    <input id="button" type="button" onclick="seePatient()" value="See Patient" />
-    <input type="hidden" name="token" th:value="${token}" />
-    <input type="hidden" name="doctor" th:value="${doctor.id}" />
+    <input id="button" type="button" onclick="seePatients()" value="See Patients"/>
+    <input id="button2" type="button" onclick="addPatient()" value="Add Patient"/>
+    <input type="hidden" name="token" th:value="${token}"/>
+    <input type="hidden" name="doctor_id" th:value="${doctor.id}"/>
 </form>
-
 <script th:inline="javascript">
-
-    var list = document.getElementById('list');
-    var data = [[${list}]]
-    for (var i = 0, ln = data.length; i < data.length; i++) {
-        var option = document.createElement('option');
-        var m = data[i]
-        option.value = m.name + " " + m.surname + " " + m.phoneNumber;
-        list.appendChild(option)
-    function findPatient(patient) {
-        for (var i = 0, ln = data.length; i < data.length; i++) {
-            if (patient === data[i].name + " " + data[i].surname + " " + data[i].phoneNumber){
-                return data[i].id
-            }
-        }
+    function seePatients(){
+        var form = document.getElementById("form")
+        form.action = "../../doc/" + [[${doctor.id}]] + " /patients"
+        form.submit()
     }
-    function seePatient(){
-        var form = document.getElementById('form');
-        var id = findPatient(document.getElementById('patient').value)
-        form.action = "../../patient/" + id
-        form.submit();
+    function addPatient(){
+        var form = document.getElementById("form")
+        form.action = "../../patient/add"
+        form.submit()
     }
-
-}</script>
 </script>
 <body>
 

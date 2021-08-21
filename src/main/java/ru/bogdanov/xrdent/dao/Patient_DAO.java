@@ -1,7 +1,8 @@
 package ru.bogdanov.xrdent.dao;
 
-import ru.bogdanov.xrdent.entity.Patient;
+import ru.bogdanov.xrdent.entity.patient.Patient;
 import org.springframework.stereotype.Component;
+import ru.bogdanov.xrdent.entity.patient.Patient_Cutted;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,22 +36,19 @@ public class Patient_DAO {
 
         }
     }
-    public List<Patient> getListByDocID(long id) {
+    public List<Patient_Cutted> getListByDocID(long id) {
         try {
-        String query = "SELECT * FROM patient WHERE Doctor_ID = ?";
+        String query = "SELECT Id,Name,Surname,Phone_Number FROM patient WHERE Doctor_ID = ?";
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setLong(1,id);
         ResultSet result = statement.executeQuery();
-        List<Patient> l = new ArrayList<>();
+        List<Patient_Cutted> l = new ArrayList<>();
         while (result.next()){
-            Patient p = new Patient();
+            Patient_Cutted p = new Patient_Cutted();
             p.setId(result.getLong(1));
             p.setName(result.getString(2));
             p.setSurname(result.getString(3));
-            p.setDoctorId(id);
-            p.setPhoneNumber(result.getString(5));
-            p.setAge(result.getInt(6));
-            p.setDescription(result.getString(7));
+            p.setPhoneNumber(result.getString(4));
             l.add(p);
         }
         return l;

@@ -1,21 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Patient</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-    <body>
-        <p>
-            <h2 th:text="${patient.name}"></h2> <h2 th:text="${patient.surname}"></h2>
-        </p>
-        <p>
-            <h3 th:text="${patient.description}"></h3>
-        </p>
-        <form id="form" action="/doc/direction">
-            <input id="button" type="submit" value="Create Direction" />
-            <input type="hidden" name="patient" th:value="${patient.id}" />
-            <input type="hidden" name="doctor" th:value="${doctor_id}" />
-            <input type="hidden" name="token" th:value="${token}" />
-        </form>
-    </body>
+<head>
+    <title>Patient</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<input id="patient" list="list">
+    <datalist id="list"></datalist>
+
+<table id="patient_info">
+</table>
+
+<form id="form" action="/doc/direction">
+    <input id="button" type="submit" value="Create Direction"/>
+    <input id="patient_id" type="hidden" name="patient"/>
+    <input type="hidden" name="doctor" th:value="${doctor.id}"/>
+    <input type="hidden" name="token" th:value="${token}"/>
+</form>
+<script th:inline="javascript">
+    var data = [[${patient_list}]]
+    window.onload = patientList()
+    document.querySelector('input[list="list"]').addEventListener('input', loadInTable);
+    function patientList(){
+        var list = document.getElementById('list');
+        for (var i = 0, ln = data.length; i < data.length; i++) {
+            var option = document.createElement('option');
+            var m = data[i]
+            option.value = m.name + " " + m.surname + " " + m.phoneNumber;
+            list.appendChild(option)
+        }
+    }
+    function findPatient(patient) {
+        for (var i = 0, ln = data.length; i < data.length; i++) {
+            if (patient === data[i].name + " " + data[i].surname + " " + data[i].phoneNumber) {
+                return data[i].id
+            }
+        }
+    }
+    function seePatient() {
+        var form = document.getElementById('form');
+        var id = findPatient(document.getElementById('patient').value)
+        form.action = "../../patient/" + id
+        form.submit();
+    }
+    function loadInTable() {
+        $.getJSON( "http://localhost:8080/patient",{id:findPatient(document.getElementById("patient").value),token:[[${token}]]}).done(function (patient){
+            var dir = document.getElementById('patient_info');
+            while(dir.firstChild){
+                dir.removeChild(dir.firstChild);
+            }
+            var tr = document.createElement("tr");
+
+            var td = document.createElement("td");
+            td.innerHTML = "Name"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = patient.name
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Surname"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = patient.surname
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Description"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = patient.description
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Age"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = patient.age
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Phone Number"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = patient.phoneNumber
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            var id = document.getElementById('patient_id');
+            id.value = patient.id
+
+        })
+    }
+</script>
+</body>
 </html>

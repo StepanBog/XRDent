@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Direction</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<head>
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<form action="../../doc/direction" name="createDirectionForm" method="post" target="_self">
+    <p>
+        Patient Name:<input type="text" name="name" th:value="${patient.name}" readonly>
+    </p>
+    <p>
+        Patient Surname:<input type="text" name="surname"  th:value="${patient.surname}" readonly>
+    </p>
+    <p>
+        Comment to Direction: :<textarea type="text" name="description"></textarea>
+    </p>
+    <p>
+        <button name="postDirection" type="submit"> postDirection</button>
+    </p>
+    <input type="hidden" name="token" th:value="${token}"/>
+    <input type="hidden" name="patient_id" th:value="${patient.id}"/>
+    <input type="hidden" name="doctor_id" th:value="${doctor.id}"/>
+</form>
+</body>
+</html>
