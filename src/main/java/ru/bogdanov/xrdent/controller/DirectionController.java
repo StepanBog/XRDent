@@ -79,12 +79,18 @@ public class DirectionController {
 
     @RequestMapping(value = "/getDirection", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getDirection(@RequestParam(name = "id", required = true) Long id, HttpServletRequest req, HttpServletResponse res) {
+    public String getDirection(@RequestParam(name = "id", required = true) Long id, HttpServletRequest req, HttpServletResponse res, @RequestParam(name = "token", required = true) String token) {
+        if (!cheakToken(token)) {
+            return null;
+        }
         return new Gson().toJson(direction_dao.getUnRegDirByID(id));
     }
     @RequestMapping(value = "/getRegDirection", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String getRegDirection(@RequestParam(name = "id", required = true) Long id, HttpServletRequest req, HttpServletResponse res) {
+    public String getRegDirection(@RequestParam(name = "id", required = true) Long id, HttpServletRequest req, HttpServletResponse res, @RequestParam(name = "token", required = true) String token) {
+        if (!cheakToken(token)) {
+            return null;
+        }
         return new Gson().toJson(direction_dao.getRegDirByID(id));
     }
 }

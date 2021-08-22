@@ -3,6 +3,8 @@ package ru.bogdanov.xrdent.dao;
 import ru.bogdanov.xrdent.entity.direction.Direction_Cutted;
 import ru.bogdanov.xrdent.entity.direction.RegisteredDirection;
 import ru.bogdanov.xrdent.entity.result.Result;
+import ru.bogdanov.xrdent.entity.result.Result_Cutted;
+import ru.bogdanov.xrdent.entity.result.Result_Full;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -34,15 +36,15 @@ public class Result_DAO {
 
         }
     }
-    public List<Direction_Cutted> getListOfRegisteredDirection(Long lab_id){
+    public List<Result_Cutted> getListOfResultsByDocId(Long doc_id){
         try {
-            String query = "SELECT patient_name, patient_surname, phone_number, direction_id FROM registered_direction WHERE laboratory_ID = ?";
+            String query = "SELECT name, surname, phone_number,ID FROM result_for_doctor WHERE Doctor_ID = ?";
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setLong(1,lab_id);
+            statement.setLong(1,doc_id);
             ResultSet result = statement.executeQuery();
-            List<Direction_Cutted> l = new ArrayList<>();
+            List<Result_Cutted> l = new ArrayList<>();
             while (result.next()){
-                Direction_Cutted d = new Direction_Cutted();
+                Result_Cutted d = new Result_Cutted();
                 d.setName(result.getString(1));
                 d.setSurname(result.getString(2));
                 d.setPhone_number(result.getString(3));
@@ -50,6 +52,30 @@ public class Result_DAO {
                 l.add(d);
             }
             return l;
+        } catch (SQLException e){
+            return null;
+        }
+    }
+
+    public Result_Full getResultById(Long id) {
+        try {
+            String query = "SELECT Name, Surname, Age, Phone_Number, Data_SRC, Result_Description, Doctor_Comment, Patient_Comment FROM result_for_doctor WHERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setLong(1,id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()){
+                Result_Full d = new Result_Full();
+                d.setName(result.getString(1));
+                d.setSurname(result.getString(2));
+                d.setAge(result.getInt(3));
+                d.setPhone_number(result.getString(4));
+                d.setData_src(result.getString(5));
+                d.setResult_description(result.getString(6));
+                d.setDoctor_comment(result.getString(7));
+                d.setPatient_comment(result.getString(8));
+                return d;
+            }
+          return null;
         } catch (SQLException e){
             return null;
         }

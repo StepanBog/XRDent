@@ -34,7 +34,7 @@ public class PatientController {
     @ResponseBody
     public String getPatient(HttpServletRequest req, @RequestParam(name = "id", required = true) Long id, Model model, @RequestParam(name = "token", required = true) String token) {
         if (!cheakToken(token)) {
-            return "view/login/login";
+            return null;
         }
         Patient p = patient_dao.getByID(id);
         return new Gson().toJson(p);

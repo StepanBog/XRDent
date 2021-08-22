@@ -12,6 +12,7 @@
 <form id="form">
     <input id="button" type="button" onclick="seePatients()" value="See Patients"/>
     <input id="button2" type="button" onclick="addPatient()" value="Add Patient"/>
+    <input id="button3" type="button" onclick="seeResults()" value="See Results"/>
     <input type="hidden" name="token" th:value="${token}"/>
     <input type="hidden" name="doctor_id" th:value="${doctor.id}"/>
 </form>
@@ -24,6 +25,11 @@
     function addPatient(){
         var form = document.getElementById("form")
         form.action = "../../patient/add"
+        form.submit()
+    }
+    function seeResults(){
+        var form = document.getElementById("form")
+        form.action = "../../result/getresults"
         form.submit()
     }
 </script>

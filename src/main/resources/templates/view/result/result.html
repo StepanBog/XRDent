@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Direction</title>
+    <title>Result</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <head>
@@ -9,20 +9,20 @@
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
-<h1>Direction</h1>
-<p><input id="direction" list="list">
+<h1>Result</h1>
+<p><input id="result" list="list">
     <datalist id="list"></datalist>
 </p>
-<table id="direction_info">
+<table id="result_info">
 
 </table>
 <SCRIPT th:inline="javascript">
-    var data = [[${unregistered_list}]]
-    window.onload = dirList()
+    var data = [[${result_list}]]
+    window.onload = resList()
     document.querySelector('input[list="list"]').addEventListener('input', loadInTable);
-    function dirList(){
+    function resList(){
         var list = document.getElementById('list');
-      //  var data = [[${unregistered_list}]]
+
         for (var i = 0, ln = data.length; i < data.length; i++) {
             var option = document.createElement('option');
             var m = data[i]
@@ -30,16 +30,16 @@
             list.appendChild(option)
         }
     }
-    function findPatient(patient) {
+    function findPatient(result) {
         for (var i = 0, ln = data.length; i < data.length; i++) {
-            if (patient === data[i].name + " " + data[i].surname + " " + data[i].phone_number) {
+            if (result === data[i].name + " " + data[i].surname + " " + data[i].phone_number) {
                 return data[i].id
             }
         }
     }
     function loadInTable() {
-        $.getJSON( "http://localhost:8080/direction/getDirection",{id:findPatient(document.getElementById("direction").value),token:[[${token}]]}).done(function (direction){
-            var dir = document.getElementById('direction_info');
+        $.getJSON( "http://localhost:8080/result/getresult",{id:findPatient(document.getElementById("result").value),token:[[${token}]]}).done(function (result){
+            var dir = document.getElementById('result_info');
             while(dir.firstChild){
                 dir.removeChild(dir.firstChild);
             }
@@ -49,7 +49,7 @@
             td.innerHTML = "Name"
             tr.appendChild(td)
             td = document.createElement("td");
-            td.innerHTML = direction.patient_name
+            td.innerHTML = result.name
             tr.appendChild(td)
             dir.appendChild(tr)
 
@@ -58,7 +58,7 @@
             td.innerHTML = "Surname"
             tr.appendChild(td)
             td = document.createElement("td");
-            td.innerHTML = direction.patient_surname
+            td.innerHTML = result.surname
             tr.appendChild(td)
             dir.appendChild(tr)
 
@@ -67,7 +67,7 @@
             td.innerHTML = "Age"
             tr.appendChild(td)
             td = document.createElement("td");
-            td.innerHTML = direction.patient_Age
+            td.innerHTML = result.age
             tr.appendChild(td)
             dir.appendChild(tr)
 
@@ -76,23 +76,48 @@
             td.innerHTML = "Phone Number"
             tr.appendChild(td)
             td = document.createElement("td");
-            td.innerHTML = direction.phone_number
+            td.innerHTML = result.phone_number
             tr.appendChild(td)
             dir.appendChild(tr)
 
-            var id = document.getElementById('direction_id');
-            id.value = direction.id
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "URL"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = result.data_src
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Patient_Comment"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = result.patient_comment
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Doctor_Comment"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = result.doctor_comment
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Result_Description"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = result.result_description
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
         })
     }
-
 </SCRIPT>
-
-<form action="../../direction/regdir" name="regDirectionForm" method="post" target="_self">
-    <input type="datetime-local" name="date_time">
-    <input type="hidden" name="token" th:value="${token}"/>
-    <input type="hidden" id="laboratory_id" name="laboratory_id" th:value="${laboratory_id}"/>
-    <input type="hidden" id="direction_id" name="direction_id" />
-    <button type="submit">Registrate Direction</button>
-</form>
 </body>
 </html>

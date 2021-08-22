@@ -37,7 +37,7 @@
         }
     }
     function loadInTable() {
-        $.getJSON( "http://localhost:8080/direction/getRegDirection",{id:findPatient(document.getElementById("direction").value)}).done(function (direction){
+        $.getJSON( "http://localhost:8080/direction/getRegDirection",{id:findPatient(document.getElementById("direction").value),token:[[${token}]]}).done(function (direction){
             var dir = document.getElementById('direction_info');
             while(dir.firstChild){
                 dir.removeChild(dir.firstChild);
@@ -76,6 +76,15 @@
             tr.appendChild(td)
             td = document.createElement("td");
             td.innerHTML = direction.phone_number
+            tr.appendChild(td)
+            dir.appendChild(tr)
+
+            tr = document.createElement("tr");
+            td = document.createElement("td");
+            td.innerHTML = "Reg Time"
+            tr.appendChild(td)
+            td = document.createElement("td");
+            td.innerHTML = direction.registrationDateTime
             tr.appendChild(td)
             dir.appendChild(tr)
 
