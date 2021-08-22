@@ -1,5 +1,7 @@
 package ru.bogdanov.xrdent.controller;
 import javafx.util.Pair;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.util.StreamUtils;
 import ru.bogdanov.xrdent.dao.Doctor_DAO;
 import ru.bogdanov.xrdent.dao.LogDAO;
 import ru.bogdanov.xrdent.dao.Patient_DAO;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 @Controller
@@ -59,4 +64,33 @@ public class LogController {
             return "forward:/laboratory/" + id.toString();
         }
     }
+    // тестовый вариант загрузки из сервера zip
+  /*  @GetMapping("/downloadZip")
+    public void downloadFile(HttpServletResponse response) {
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=download.zip");
+        response.setStatus(HttpServletResponse.SC_OK);
+
+        String fileName = "C:/Users/stepa/OneDrive/Рабочий стол/file.txt";
+
+        System.out.println("############# file size ###########" + 1);
+
+        try (ZipOutputStream zippedOut = new ZipOutputStream(response.getOutputStream())) {
+            FileSystemResource resource = new FileSystemResource(fileName);
+
+            ZipEntry e = new ZipEntry(resource.getFilename());
+            // Configure the zip entry, the properties of the file
+            e.setSize(resource.contentLength());
+            e.setTime(System.currentTimeMillis());
+            // etc.
+            zippedOut.putNextEntry(e);
+            // And the content of the resource:
+            StreamUtils.copy(resource.getInputStream(), zippedOut);
+            zippedOut.closeEntry();
+            zippedOut.finish();
+        } catch (Exception e) {
+            // Exception handling goes here
+        }
+    }*/
 }

@@ -1,11 +1,13 @@
 package ru.bogdanov.xrdent.dao;
 
-import ru.bogdanov.xrdent.entity.direction.Direction_Cutted;
-import ru.bogdanov.xrdent.entity.direction.RegisteredDirection;
+import ru.bogdanov.xrdent.entity.Storage;
 import ru.bogdanov.xrdent.entity.result.Result;
 import ru.bogdanov.xrdent.entity.result.Result_Cutted;
 import ru.bogdanov.xrdent.entity.result.Result_Full;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class Result_DAO {
             String query = "INSERT INTO result(id, data_src, description, direction_id) VALUE (?,?,?,?)";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setLong(1,result.getId());
-            statement.setString(2,result.getDataSrc());
+            statement.setLong(2,result.getDataSrc());
             statement.setString(3,result.getDescription());
             statement.setLong(4,result.getDirectionId());
             statement.execute();
@@ -76,6 +78,47 @@ public class Result_DAO {
                 return d;
             }
           return null;
+        } catch (SQLException e){
+            return null;
+        }
+    }
+
+    public Long save(Storage st) {
+        try {
+            connection.setAutoCommit(false);
+            String query = "INSERT INTO storage(Data) VALUE (?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            Blob blob = new SerialBlob(st.getZip() );
+            statement.setBlob(1,blob);
+            statement.execute();
+
+            String query2 = "SELECT LAST_INSERT_ID()";
+            statement = connection.prepareStatement(query2);
+            ResultSet result = statement.executeQuery();
+            connection.commit();
+            connection.setAutoCommit(true);
+            while (result.next()){
+                return result.getLong(1);
+            }
+            return null;
+        } catch (SQLException e){
+            return null;
+        }
+    }
+
+    public Storage downloadzip(Long id) {
+        try {
+            String query = "SELECT * FROM storage WHERE ID = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setLong(1,id);
+            ResultSet result = statement.executeQuery();
+            while (result.next()){
+                Storage d = new Storage();
+                d.setID(result.getLong(1));
+                d.setBlob(result.getBlob(2));
+                return d;
+            }
+            return null;
         } catch (SQLException e){
             return null;
         }

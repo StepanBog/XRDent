@@ -16,6 +16,10 @@
 <table id="result_info">
 
 </table>
+<form id="load_st" action="../../result/download" type="/blank">
+    <input type="hidden" name="token" th:value="${token}">
+    <input type="hidden" id="st_id" name="st_id">
+</form>
 <SCRIPT th:inline="javascript">
     var data = [[${result_list}]]
     window.onload = resList()
@@ -36,6 +40,14 @@
                 return data[i].id
             }
         }
+    }
+    var st_id;
+    function load() {
+        alert(st_id)
+        var id = document.getElementById("st_id")
+        id.value = st_id;
+        var form = document.getElementById("load_st")
+        form.submit();
     }
     function loadInTable() {
         $.getJSON( "http://localhost:8080/result/getresult",{id:findPatient(document.getElementById("result").value),token:[[${token}]]}).done(function (result){
@@ -84,8 +96,11 @@
             td = document.createElement("td");
             td.innerHTML = "URL"
             tr.appendChild(td)
-            td = document.createElement("td");
-            td.innerHTML = result.data_src
+            td = document.createElement("input");
+            td.type = 'button';
+            td.value = "download"
+            st_id = result.data_src
+            td.onclick = function () {load()}
             tr.appendChild(td)
             dir.appendChild(tr)
 

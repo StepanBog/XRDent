@@ -4,11 +4,11 @@ package ru.bogdanov.xrdent.entity.result;
 public class Result {
 
   private long id;
-  private String dataSrc;
+  private Long dataSrc;
   private String description;
   private long directionId;
 
-  public Result(String dataSrc, String description, long directionId) {
+  public Result(Long dataSrc, String description, long directionId) {
     this.dataSrc = dataSrc;
     this.description = description;
     this.directionId = directionId;
@@ -23,11 +23,11 @@ public class Result {
   }
 
 
-  public String getDataSrc() {
+  public Long getDataSrc() {
     return dataSrc;
   }
 
-  public void setDataSrc(String dataSrc) {
+  public void setDataSrc(Long dataSrc) {
     this.dataSrc = dataSrc;
   }
 

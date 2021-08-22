@@ -1,20 +1,27 @@
 package ru.bogdanov.xrdent.controller;
 
 import com.google.gson.Gson;
+import org.apache.catalina.connector.Response;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.bogdanov.xrdent.dao.Direction_DAO;
 import ru.bogdanov.xrdent.dao.LogDAO;
 import ru.bogdanov.xrdent.dao.Result_DAO;
-import ru.bogdanov.xrdent.entity.patient.Patient;
+import ru.bogdanov.xrdent.entity.Storage;
 import ru.bogdanov.xrdent.entity.result.Result;
 import ru.bogdanov.xrdent.entity.result.Result_Cutted;
 import ru.bogdanov.xrdent.entity.result.Result_Full;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.List;
 
 @Component
@@ -31,20 +38,47 @@ public class ResultController {
         }
     }
     @PostMapping("/result")
-    public String postResult(HttpServletRequest req, HttpServletResponse res, Model model){
+    public String postResult(@RequestParam("file") MultipartFile file,HttpServletRequest req, HttpServletResponse res, Model model){
+
         String token = (String) req.getParameter("token");
         Long direction_id = Long.parseLong((String) req.getParameter("direction_id"));
         Long laboratory_id = Long.parseLong((String) req.getParameter("laboratory_id"));
-        String src =  req.getParameter("src");
         String description =  req.getParameter("description");
         if (!cheakToken(token,"laboratory")) {
             return "view/login/login";
         }
+        Long src = uploadToDB(file);
         Result result = new Result(src,description,direction_id);
         direction_dao.close_direction(direction_id);
         result_dao.post_result(result);
         model.addAttribute("token",token);
         return "forward:/laboratory/" + laboratory_id;
+    }
+    @RequestMapping(value = "/download", produces="application/zip")
+    @ResponseBody
+    public void downloadFromDB(HttpServletRequest req, HttpServletResponse response) throws IOException, SQLException {
+        Long st_id = Long.parseLong((String) req.getParameter("st_id"));
+        Storage st = result_dao.downloadzip(st_id);
+        String token = (String) req.getParameter("token");
+        if (!cheakToken(token,"doctor")) {
+            return;
+        }
+        Blob blob = st.getBlob();
+        response.setContentType("application/zip");
+        response.addHeader("Content-Disposition", "attachment; filename=\"test.zip\"");
+        response.setContentLength((int) blob.length());
+
+        InputStream inputStream = blob.getBinaryStream();
+        OutputStream outputStream = response.getOutputStream();
+        int bytes;
+        while ((bytes = inputStream.read()) != -1) {
+            outputStream.write(bytes);
+        }
+
+        inputStream.close();
+        outputStream.close();
+
+
     }
 
     @GetMapping("/getresults")
@@ -71,4 +105,16 @@ public class ResultController {
 
 
     }
+
+  public Long uploadToDB(MultipartFile file) {
+      Storage st = new Storage();
+      String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+      try {
+          st.setZip(file.getBytes());
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+      Long src = result_dao.save(st);
+      return src;
+  }
 }
